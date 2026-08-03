@@ -3,6 +3,9 @@ import Sidebar from '../components/Sidebar';
 import TopBar from '../components/TopBar';
 import Card from '../components/Card';
 import OverviewStatusCards from '../components/OverviewStatusCards';
+import NetworkOverviewPanel from '../components/NetworkOverviewPanel';
+import RecentLeakEventsSection from '../components/RecentLeakEventsSection';
+import type { District } from '../data/mockData';
 
 export const Overview: React.FC = () => {
   const [activeItemId, setActiveItemId] = useState<string>('overview');
@@ -11,6 +14,11 @@ export const Overview: React.FC = () => {
   const handleSelectItem = (id: string, title: string) => {
     setActiveItemId(id);
     setActiveTitle(title);
+  };
+
+  const handleSelectDistrict = (district: District) => {
+    setActiveItemId(district.id);
+    setActiveTitle(district.name);
   };
 
   return (
@@ -22,13 +30,8 @@ export const Overview: React.FC = () => {
           {activeItemId === 'overview' ? (
             <div className="overview-dashboard">
               <OverviewStatusCards />
-              <Card className="overview-welcome-card">
-                <h2>Network Overview</h2>
-                <p className="placeholder-text">
-                  Welcome to the control room dashboard. Select a municipality or district from the
-                  left navigation to inspect telemetry, sensor statuses, and hydraulic models.
-                </p>
-              </Card>
+              <NetworkOverviewPanel onSelectDistrict={handleSelectDistrict} />
+              <RecentLeakEventsSection />
             </div>
           ) : (
             <Card className="content-placeholder-card">
