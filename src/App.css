@@ -239,9 +239,13 @@
 }
 
 .sidebar-header {
-  padding: 20px 24px 16px;
+  height: var(--header-height, 64px);
+  padding: 0 24px;
   display: flex;
   align-items: center;
+  border-bottom: var(--header-border, 1px solid var(--color-border, #e2e8f0));
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .sidebar-logo {
@@ -377,9 +381,9 @@
 
 /* Top Bar Navigation */
 .topbar {
-  height: 64px;
+  height: var(--header-height, 64px);
   background-color: #ffffff;
-  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  border-bottom: var(--header-border, 1px solid var(--color-border, #e2e8f0));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -387,6 +391,8 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .topbar-title {

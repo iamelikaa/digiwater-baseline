@@ -96,8 +96,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
         </div>
       </div>
 
-      <hr className="sidebar-divider" />
-
       <nav className="sidebar-nav" aria-label="Primary navigation">
         <ul className="nav-list">
           <li>
