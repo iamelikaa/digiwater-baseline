@@ -676,12 +676,22 @@
   font-weight: 600;
 }
 
-.status-pill-normal {
+.map-tooltip-status.status-pill-normal {
   color: #059669;
+  background: transparent;
+  padding: 0;
 }
 
-.status-pill-anomaly {
+.map-tooltip-status.status-pill-warning {
+  color: #d97706;
+  background: transparent;
+  padding: 0;
+}
+
+.map-tooltip-status.status-pill-critical {
   color: #dc2626;
+  background: transparent;
+  padding: 0;
 }
 
 .map-popup-content h4 {
@@ -701,6 +711,11 @@
   color: #059669;
 }
 
+.status-text-warning {
+  color: #d97706;
+}
+
+.status-text-critical,
 .status-text-anomaly {
   color: #dc2626;
 }

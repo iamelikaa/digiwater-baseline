@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Polygon, Tooltip, Popup } from 'react-leaflet'
 import { districts } from '../data/mockData';
 import type { District } from '../data/mockData';
 import { districtBoundaries } from '../data/districtBoundaries.real';
-import { getEffectiveStatus } from '../utils/statusHelpers';
+import { getEffectiveSeverity } from '../utils/statusHelpers';
 
 export interface OverviewMapProps {
   onSelectDistrict?: (district: District) => void;
@@ -13,12 +13,21 @@ export const OverviewMap: React.FC<OverviewMapProps> = ({ onSelectDistrict }) =>
   const topLevelDistricts = districts.filter((d) => !d.parentId);
 
   const getPathOptions = (d: District) => {
-    const status = getEffectiveStatus(d);
+    const severity = getEffectiveSeverity(d);
 
-    if (status === 'anomaly') {
+    if (severity === 'critical') {
       return {
         fillColor: '#ef4444',
         color: '#dc2626',
+        weight: 2,
+        fillOpacity: 0.5,
+      };
+    }
+
+    if (severity === 'warning') {
+      return {
+        fillColor: '#f59e0b',
+        color: '#d97706',
         weight: 2,
         fillOpacity: 0.5,
       };
@@ -54,7 +63,7 @@ export const OverviewMap: React.FC<OverviewMapProps> = ({ onSelectDistrict }) =>
             if (!positions || positions.length === 0) {
               return null;
             }
-            const status = getEffectiveStatus(d);
+            const severity = getEffectiveSeverity(d);
             const pathOpts = getPathOptions(d);
 
             return (
@@ -69,8 +78,12 @@ export const OverviewMap: React.FC<OverviewMapProps> = ({ onSelectDistrict }) =>
                 <Tooltip direction="top" offset={[0, -10]} opacity={0.95}>
                   <div className="map-tooltip-content">
                     <strong>{d.name}</strong>
-                    <span className={`map-tooltip-status status-pill-${status}`}>
-                      {status === 'anomaly' ? 'Anomaly' : 'Normal'}
+                    <span className={`map-tooltip-status status-pill-${severity}`}>
+                      {severity === 'critical'
+                        ? 'Critical'
+                        : severity === 'warning'
+                          ? 'Warning'
+                          : 'Normal'}
                     </span>
                   </div>
                 </Tooltip>
@@ -79,8 +92,12 @@ export const OverviewMap: React.FC<OverviewMapProps> = ({ onSelectDistrict }) =>
                     <h4>{d.name}</h4>
                     <p className="popup-status-row">
                       Status:{' '}
-                      <strong className={`status-text-${status}`}>
-                        {status === 'anomaly' ? 'Anomaly Detected' : 'Normal Operational'}
+                      <strong className={`status-text-${severity}`}>
+                        {severity === 'critical'
+                          ? 'Critical Attention'
+                          : severity === 'warning'
+                            ? 'Warning Detected'
+                            : 'Normal Operational'}
                       </strong>
                     </p>
                     {d.parentId && <p className="popup-parent-row">Parent: {d.parentId}</p>}
