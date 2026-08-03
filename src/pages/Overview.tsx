@@ -1,33 +1,45 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import Sidebar from '../components/Sidebar';
+import TopBar from '../components/TopBar';
 import Card from '../components/Card';
+import OverviewStatusCards from '../components/OverviewStatusCards';
 
 export const Overview: React.FC = () => {
-  return (
-    <div className="overview-page">
-      <header className="overview-header">
-        <div className="overview-logo">
-          <div className="app-mark" aria-hidden="true">DW</div>
-          <span className="app-wordmark">DigiWater</span>
-        </div>
-        <div className="overview-actions">
-          <Link to="/" className="nav-link">
-            ← Back to Login
-          </Link>
-        </div>
-      </header>
+  const [activeItemId, setActiveItemId] = useState<string>('overview');
+  const [activeTitle, setActiveTitle] = useState<string>('Overview');
 
-      <main className="overview-content">
-        <Card className="overview-card">
-          <h1>Network Overview</h1>
-          <p className="overview-subtitle">
-            Welcome to the DigiWater monitoring dashboard prototype.
-          </p>
-          <p className="overview-note">
-            Select a district or view real-time metrics from the navigation panel.
-          </p>
-        </Card>
-      </main>
+  const handleSelectItem = (id: string, title: string) => {
+    setActiveItemId(id);
+    setActiveTitle(title);
+  };
+
+  return (
+    <div className="dashboard-shell">
+      <Sidebar activeItemId={activeItemId} onSelectItem={handleSelectItem} />
+      <div className="dashboard-main">
+        <TopBar title={activeTitle} />
+        <main className="dashboard-content">
+          {activeItemId === 'overview' ? (
+            <div className="overview-dashboard">
+              <OverviewStatusCards />
+              <Card className="overview-welcome-card">
+                <h2>Network Overview</h2>
+                <p className="placeholder-text">
+                  Welcome to the control room dashboard. Select a municipality or district from the
+                  left navigation to inspect telemetry, sensor statuses, and hydraulic models.
+                </p>
+              </Card>
+            </div>
+          ) : (
+            <Card className="content-placeholder-card">
+              <h2>{activeTitle}</h2>
+              <p className="placeholder-text">
+                Monitoring dashboard prototype — select an item from the navigation menu.
+              </p>
+            </Card>
+          )}
+        </main>
+      </div>
     </div>
   );
 };
