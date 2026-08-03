@@ -652,12 +652,17 @@
   overflow: hidden;
   border: 1px solid var(--color-border, #e2e8f0);
   position: relative;
+  isolation: isolate;
+  z-index: 0;
 }
 
 .overview-leaflet-map {
   height: 100%;
   width: 100%;
   font-family: inherit;
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
 }
 
 .map-tooltip-content {
