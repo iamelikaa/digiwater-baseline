@@ -8,8 +8,10 @@ export interface IssuesTableProps {
 }
 
 export const IssuesTable: React.FC<IssuesTableProps> = ({ onSelectDistrict }) => {
-  const anomalyDistricts = districts.filter((d) => getEffectiveStatus(d) === 'anomaly');
-  const totalDistricts = districts.length;
+  const anomalyDistricts = districts.filter((d) => d.status === 'anomaly');
+  const topLevelCities = districts.filter((d) => !d.parentId);
+  const totalCities = topLevelCities.length;
+  const citiesWithIssuesCount = topLevelCities.filter((d) => getEffectiveStatus(d) === 'anomaly').length;
   const issuesCount = anomalyDistricts.length;
 
   const getParentName = (d: District): string => {
@@ -20,11 +22,21 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({ onSelectDistrict }) =>
     return d.name;
   };
 
+  const getIssueTypeLabel = (d: District): string => {
+    if (d.issueType === 'leakage') {
+      return 'Leakage Warning';
+    }
+    if (d.issueType === 'sensor') {
+      return 'Sensor Warning';
+    }
+    return 'Sensor Warning';
+  };
+
   return (
     <div className="panel-card issues-table-panel">
       <div className="panel-header">
-        <h3 className="panel-title">Districts with Issues</h3>
-        <p className="panel-subtitle">Only districts with active warnings or anomalies are shown</p>
+        <h3 className="panel-title">Cities with Issues</h3>
+        <p className="panel-subtitle">Only cities with active warnings are shown</p>
       </div>
 
       {issuesCount === 0 ? (
@@ -41,7 +53,7 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({ onSelectDistrict }) =>
             <table className="issues-table">
               <thead>
                 <tr>
-                  <th>MUNICIPALITY</th>
+                  <th>CITY</th>
                   <th>ISSUE TYPE</th>
                   <th>DISTRICT</th>
                   <th>STATUS</th>
@@ -51,7 +63,7 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({ onSelectDistrict }) =>
                 {anomalyDistricts.map((d) => (
                   <tr
                     key={d.id}
-                    className="issue-row issue-row-warning"
+                    className={`issue-row issue-row-${d.severity || 'warning'}`}
                     onClick={() => onSelectDistrict && onSelectDistrict(d)}
                     tabIndex={0}
                     role="button"
@@ -61,10 +73,12 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({ onSelectDistrict }) =>
                       <span className="issue-row-accent" aria-hidden="true" />
                       <span className="municipality-name">{getParentName(d)}</span>
                     </td>
-                    <td className="cell-issue-type">Sensor Anomaly</td>
+                    <td className="cell-issue-type">{getIssueTypeLabel(d)}</td>
                     <td className="cell-district">{d.parentId ? d.name : '—'}</td>
                     <td className="cell-status">
-                      <span className="status-pill status-pill-warning">Anomaly</span>
+                      <span className={`status-pill status-pill-${d.severity || 'warning'}`}>
+                        {d.severity === 'critical' ? 'Critical' : 'Warning'}
+                      </span>
                     </td>
                   </tr>
                 ))}
@@ -77,7 +91,7 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({ onSelectDistrict }) =>
               i
             </span>
             <span className="footer-summary-text">
-              {issuesCount} out of {totalDistricts} districts have active issues
+              {citiesWithIssuesCount} out of {totalCities} cities have active issues
             </span>
           </div>
         </>

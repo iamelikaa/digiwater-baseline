@@ -555,7 +555,7 @@
 }
 
 .status-card-alert .status-card-accent {
-  background-color: #dc2626;
+  background-color: #d14343;
 }
 
 .status-card-caption {
@@ -726,6 +726,7 @@
   letter-spacing: 0.5px;
   padding: 10px 14px;
   border-bottom: 1px solid var(--color-border, #e2e8f0);
+  white-space: nowrap;
 }
 
 .issues-table td {
@@ -733,10 +734,10 @@
   font-size: 14px;
   border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;
+  white-space: nowrap;
 }
 
 .issue-row {
-  position: relative;
   transition: background-color 0.15s ease;
   cursor: pointer;
 }
@@ -749,9 +750,9 @@
   position: relative;
   font-weight: 600;
   color: var(--color-primary-teal, #5bb398);
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  padding-left: 20px;
+  min-width: 160px;
+  white-space: nowrap;
 }
 
 .issue-row-accent {
@@ -773,10 +774,14 @@
 
 .cell-issue-type {
   color: #334155;
+  min-width: 160px;
+  white-space: nowrap;
 }
 
 .cell-district {
   color: #94a3b8;
+  min-width: 120px;
+  white-space: nowrap;
 }
 
 .status-pill {
