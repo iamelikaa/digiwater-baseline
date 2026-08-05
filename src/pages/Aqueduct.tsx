@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { districts } from '../data/mockData';
 import { getEffectiveSeverity } from '../utils/statusHelpers';
 import GrafanaPlaceholder from '../components/GrafanaPlaceholder';
+import networkMapPlaceholderImg from '../assets/network-map-placeholder.png';
 import Card from '../components/Card';
 import DistrictsTable from '../components/DistrictsTable';
 
@@ -58,7 +59,13 @@ export const Aqueduct: React.FC<AqueductProps> = ({ cityId }) => {
             </Link>
           </div>
           {cityId === 'marene' ? (
-            <GrafanaPlaceholder />
+            <GrafanaPlaceholder>
+              <img
+                src={networkMapPlaceholderImg}
+                alt="Marene Network Map Static Placeholder"
+                className="grafana-placeholder-image"
+              />
+            </GrafanaPlaceholder>
           ) : (
             <div className="issues-empty-state" style={{ padding: '60px 20px' }}>
               <div className="empty-state-icon" style={{ backgroundColor: '#f1f5f9', color: '#64748b' }}>ℹ️</div>
