@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import TopBar from '../components/TopBar';
 import Card from '../components/Card';
@@ -15,6 +15,7 @@ import { districts, type District } from '../data/mockData';
 export const Overview: React.FC = () => {
   const { cityId, districtId } = useParams<{ cityId: string; districtId: string }>();
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeItemId, setActiveItemId] = useState<string>(districtId || cityId || 'overview');
   const [activeTitle, setActiveTitle] = useState<string>('Overview');
 
@@ -49,8 +50,11 @@ export const Overview: React.FC = () => {
   };
 
   const handleSelectDistrict = (district: District) => {
-    setActiveItemId(district.id);
-    setActiveTitle(district.name);
+    if (district.parentId) {
+      navigate(`/aqueduct/${district.parentId}/${district.id}`);
+    } else {
+      navigate(`/aqueduct/${district.id}`);
+    }
   };
 
   return (
