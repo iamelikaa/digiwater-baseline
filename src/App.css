@@ -332,6 +332,24 @@
   border-radius: 0 4px 4px 0;
 }
 
+.nav-item.active-warning {
+  background-color: #fef3c7; /* amber-50 */
+  color: #d97706; /* amber-600 */
+}
+
+.nav-item.active-warning::before {
+  background-color: #d97706;
+}
+
+.nav-item.active-critical {
+  background-color: #fee2e2; /* red-50 */
+  color: #dc2626; /* red-600 */
+}
+
+.nav-item.active-critical::before {
+  background-color: #dc2626;
+}
+
 .nav-icon {
   flex-shrink: 0;
   color: currentColor;

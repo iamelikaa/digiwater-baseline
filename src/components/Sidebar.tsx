@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { districts } from '../data/mockData';
 import type { District } from '../data/mockData';
+import { getEffectiveSeverity } from '../utils/statusHelpers';
 
 export interface SidebarProps {
   activeItemId: string;
@@ -89,6 +90,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
     navigate(`/aqueduct/${id}`);
   };
 
+  const handleTopLevelClick = (id: string, name: string) => {
+    onSelectItem(id, name);
+    setIsAqueductExpanded(false);
+    setExpandedMunicipality(null);
+  };
+
   return (
     <aside className="sidebar" aria-label="Main sidebar">
       <div className="sidebar-header">
@@ -106,7 +113,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
             <button
               type="button"
               className={`nav-item ${activeItemId === 'overview' ? 'active' : ''}`}
-              onClick={() => onSelectItem('overview', 'Overview')}
+              onClick={() => handleTopLevelClick('overview', 'Overview')}
             >
               <OverviewIcon />
               <span className="nav-label">Overview</span>
@@ -132,12 +139,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
                   const hasChildren = children.length > 0;
                   const isMunicipalityExpanded = expandedMunicipality === municipality.id;
                   const isMunicipalityActive = activeItemId === municipality.id;
+                  const munSeverity = getEffectiveSeverity(municipality);
+                  const munActiveClass = isMunicipalityActive 
+                    ? `active ${munSeverity !== 'normal' ? `active-${munSeverity}` : ''}` 
+                    : '';
 
                   return (
                     <li key={municipality.id}>
                       <button
                         type="button"
-                        className={`nav-item nav-subitem ${isMunicipalityActive ? 'active' : ''}`}
+                        className={`nav-item nav-subitem ${munActiveClass}`}
                         onClick={() =>
                           handleMunicipalityClick(
                             municipality.id,
@@ -156,13 +167,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
                           <ul className="nav-sublist nav-nested-list">
                             {children.map((district) => {
                               const isDistrictActive = activeItemId === district.id;
+                              const distSeverity = getEffectiveSeverity(district);
+                              const distActiveClass = isDistrictActive 
+                                ? `active ${distSeverity !== 'normal' ? `active-${distSeverity}` : ''}` 
+                                : '';
+                              
                               return (
                                 <li key={district.id}>
                                   <button
                                     type="button"
-                                    className={`nav-item nav-nested-item ${
-                                      isDistrictActive ? 'active' : ''
-                                    }`}
+                                    className={`nav-item nav-nested-item ${distActiveClass}`}
                                     onClick={() => {
                                       onSelectItem(district.id, district.name);
                                       navigate(`/aqueduct/${municipality.id}/${district.id}`);
@@ -187,7 +201,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
             <button
               type="button"
               className={`nav-item ${activeItemId === 'report-leak' ? 'active' : ''}`}
-              onClick={() => onSelectItem('report-leak', 'Report Leak')}
+              onClick={() => handleTopLevelClick('report-leak', 'Report Leak')}
             >
               <ReportLeakIcon />
               <span className="nav-label">Report Leak</span>
@@ -198,7 +212,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
             <button
               type="button"
               className={`nav-item ${activeItemId === 'leak-history' ? 'active' : ''}`}
-              onClick={() => onSelectItem('leak-history', 'Leak History')}
+              onClick={() => handleTopLevelClick('leak-history', 'Leak History')}
             >
               <LeakHistoryIcon />
               <span className="nav-label">Leak History</span>
@@ -212,7 +226,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
         <button
           type="button"
           className={`nav-item ${activeItemId === 'settings' ? 'active' : ''}`}
-          onClick={() => onSelectItem('settings', 'Settings')}
+          onClick={() => handleTopLevelClick('settings', 'Settings')}
         >
           <SettingsIcon />
           <span className="nav-label">Settings</span>
