@@ -53,7 +53,17 @@ export const Aqueduct: React.FC<AqueductProps> = ({ cityId }) => {
           <div className="panel-header" style={{ padding: '24px 24px 16px' }}>
             <h3 className="panel-title">Network Map &mdash; {city.name}</h3>
           </div>
-          <GrafanaPlaceholder />
+          {cityId === 'marene' ? (
+            <GrafanaPlaceholder />
+          ) : (
+            <div className="issues-empty-state" style={{ padding: '60px 20px' }}>
+              <div className="empty-state-icon" style={{ backgroundColor: '#f1f5f9', color: '#64748b' }}>ℹ️</div>
+              <h4 className="empty-state-title">Network Map Not Available</h4>
+              <p className="empty-state-text">
+                Telemetry data for {city.name} has not been integrated yet.
+              </p>
+            </div>
+          )}
         </Card>
       </section>
 
