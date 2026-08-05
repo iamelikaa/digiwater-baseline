@@ -94,6 +94,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
     onSelectItem(id, name);
     setIsAqueductExpanded(false);
     setExpandedMunicipality(null);
+    if (id === 'report-leak') {
+      navigate('/report-leak');
+    }
   };
 
   return (

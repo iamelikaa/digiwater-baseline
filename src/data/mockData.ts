@@ -29,3 +29,18 @@ export const districts: District[] = [
   { id: "fossano", name: "Fossano", status: "normal", lat: 44.5495, lng: 7.7233, sensorCount: 56, leakageProbability: 4, lastSensorUpdate: "5 min ago" },
   { id: "savigliano", name: "Savigliano", status: "normal", lat: 44.6425, lng: 7.6595, sensorCount: 38, leakageProbability: 7, lastSensorUpdate: "10 min ago" },
 ];
+
+export interface LeakReport {
+  id: string;
+  city: string;
+  district: string;
+  address: string;
+  date: string;
+  type: "INTERNAL" | "EXTERNAL";
+  material?: string;
+  diameter?: string;
+  reportedBy: string;
+  notes?: string;
+}
+
+export const leakReports: LeakReport[] = [];

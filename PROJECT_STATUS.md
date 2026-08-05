@@ -14,9 +14,9 @@ finishing, per the instruction at the end of each task prompt).
 - Task 04.1 — District Details: Header + Leak History (Added route `/aqueduct/:cityId/:districtId`, built DistrictDetails page with dynamic header and static Grafana placeholder for Leak History, updated Sidebar for district navigation)
 - Task 04.2 — District Details: Sensor Data Charts (Installed chart.js and react-chartjs-2. Created SensorChart component with local generator for mock timeseries data. Integrated side-by-side layout in DistrictDetails with Leakage Probability placeholder.)
 - Task 04.3 — District Details: Sensor Status Grid (Built SensorStatusCard component, added mock statuses to sensors array, and rendered dynamic grid in DistrictDetails with dashed placeholder.)
-
+- Task 05.1 — Report Leak Form (Added `/report-leak` route, built `ReportLeak` component with form state, added `LeakReport` type and `leakReports` array to mock data, updated Sidebar to navigate.)
 ## In progress / current task
-Task 05.1 (`Study-Materials/Tasks/05_Report_Leak/05.1-*.md`)
+Task 06.1
 
 ## Finished tasks (by ID)
 - 01.1
@@ -29,14 +29,14 @@ Task 05.1 (`Study-Materials/Tasks/05_Report_Leak/05.1-*.md`)
 - 04.1
 - 04.2
 - 04.3
-
+- 05.1
 ## Recommended next task
 01.1 → then 02.1, 02.2, 02.3 → 03.1, 03.2 → 04.1, 04.2, 04.3 → 05.1 → 06.1 → 07.1 → 08.1
 (see `Study-Materials/Tasks/README.md` for why this order)
 
 ## Mock data state
 - `src/data/mockData.ts` — extended with `sensorCount`, `leakageProbability`, and `lastSensorUpdate` in Tasks 03.1 and 03.2 for all districts and childless municipalities.
-- No shared leak-reports data source yet (needed from Task 05.1 onward, read by 06.1).
+- `src/data/mockData.ts` — added `LeakReport` interface and an empty `leakReports` array in Task 05.1 to persist submitted leak reports.
 - No new mock data fields or shared data sources were added in Tasks 01.1, 02.1, 02.2, 02.3, or 02.4.
 
 ## Branch

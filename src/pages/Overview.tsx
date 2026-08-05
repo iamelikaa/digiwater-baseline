@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import TopBar from '../components/TopBar';
 import Card from '../components/Card';
@@ -8,15 +8,20 @@ import NetworkOverviewPanel from '../components/NetworkOverviewPanel';
 import RecentLeakEventsSection from '../components/RecentLeakEventsSection';
 import Aqueduct from './Aqueduct';
 import DistrictDetails from './DistrictDetails';
+import ReportLeak from './ReportLeak';
 import { districts, type District } from '../data/mockData';
 
 export const Overview: React.FC = () => {
   const { cityId, districtId } = useParams<{ cityId: string; districtId: string }>();
+  const location = useLocation();
   const [activeItemId, setActiveItemId] = useState<string>(districtId || cityId || 'overview');
   const [activeTitle, setActiveTitle] = useState<string>('Overview');
 
   useEffect(() => {
-    if (districtId) {
+    if (location.pathname === '/report-leak') {
+      setActiveItemId('report-leak');
+      setActiveTitle('Report Leak');
+    } else if (districtId) {
       const district = districts.find(d => d.id === districtId);
       if (district) {
         setActiveItemId(districtId);
@@ -32,7 +37,7 @@ export const Overview: React.FC = () => {
       setActiveItemId('overview');
       setActiveTitle('Overview');
     }
-  }, [cityId, districtId]);
+  }, [cityId, districtId, location.pathname]);
 
   const handleSelectItem = (id: string, title: string) => {
     setActiveItemId(id);
@@ -60,6 +65,8 @@ export const Overview: React.FC = () => {
             <DistrictDetails cityId={cityId!} districtId={districtId} />
           ) : cityId && activeItemId === cityId ? (
             <Aqueduct cityId={cityId} />
+          ) : activeItemId === 'report-leak' ? (
+            <ReportLeak />
           ) : (
             <Card className="content-placeholder-card">
               <h2>{activeTitle}</h2>
