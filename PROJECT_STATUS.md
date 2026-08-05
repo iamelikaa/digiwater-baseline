@@ -15,7 +15,7 @@ finishing, per the instruction at the end of each task prompt).
 - Task 04.2 — District Details: Sensor Data Charts (Installed chart.js and react-chartjs-2. Created SensorChart component with local generator for mock timeseries data. Integrated side-by-side layout in DistrictDetails with Leakage Probability placeholder.)
 - Task 04.3 — District Details: Sensor Status Grid (Built SensorStatusCard component, added mock statuses to sensors array, and rendered dynamic grid in DistrictDetails with dashed placeholder.)
 - Task 05.1 — Report Leak Form (Added `/report-leak` route, built `ReportLeak` component with form state, added `LeakReport` type and `leakReports` array to mock data, updated Sidebar to navigate.)
-- Task 06.1 — Leak History (Added `/leak-history` route, built `LeakHistory` component with filter bar and paginated data table, implemented client-side sorting and filtering, and seeded mock data array).
+- Task 06.1 — Leak History (Added `/leak-history` route, built `LeakHistory` component with filter bar and paginated data table, implemented client-side sorting and filtering, and seeded mock data array. Fixed table header and badge casing to match design. Reverted generated mock addresses to `"Via ..."` placeholders as shown in design.)
 ## In progress / current task
 Task 07.1
 
