@@ -8,11 +8,32 @@ export interface IssuesTableProps {
 }
 
 export const IssuesTable: React.FC<IssuesTableProps> = ({ onSelectDistrict }) => {
-  const anomalyDistricts = districts.filter((d) => d.status === 'anomaly');
   const topLevelCities = districts.filter((d) => !d.parentId);
   const totalCities = topLevelCities.length;
   const citiesWithIssuesCount = topLevelCities.filter((d) => getEffectiveStatus(d) === 'anomaly').length;
-  const issuesCount = anomalyDistricts.length;
+
+  // One row per city with an active issue, not one row per anomalous district —
+  // pick that city's worst anomaly (its own, or the worst among its children) as
+  // the representative issue, so a city with several flagged districts (e.g.
+  // Marene) still only appears once, matching the Overview design.
+  const severityRank: Record<string, number> = { critical: 2, warning: 1 };
+  const cityIssueRows: District[] = topLevelCities
+    .map((city) => {
+      const children = districts.filter((d) => d.parentId === city.id);
+      const candidates =
+        children.length > 0
+          ? children.filter((d) => d.status === 'anomaly')
+          : city.status === 'anomaly'
+          ? [city]
+          : [];
+      if (candidates.length === 0) return null;
+      return candidates.reduce((worst, d) =>
+        (severityRank[d.severity || 'warning'] ?? 1) > (severityRank[worst.severity || 'warning'] ?? 1) ? d : worst
+      );
+    })
+    .filter((d): d is District => d !== null);
+
+  const issuesCount = cityIssueRows.length;
 
   const getParentName = (d: District): string => {
     if (d.parentId) {
@@ -60,7 +81,7 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({ onSelectDistrict }) =>
                 </tr>
               </thead>
               <tbody>
-                {anomalyDistricts.map((d) => (
+                {cityIssueRows.map((d) => (
                   <tr
                     key={d.id}
                     className={`issue-row issue-row-${d.severity || 'warning'}`}

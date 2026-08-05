@@ -25,7 +25,7 @@ export const districts: District[] = [
   { id: "salza", name: "Salza", status: "normal", lat: 44.684, lng: 7.694, parentId: "marene", sensorCount: 4, leakageProbability: 3, lastSensorUpdate: "15 min ago" },
   { id: "concentrico", name: "Concentrico", status: "normal", lat: 44.6906, lng: 7.6947, parentId: "marene", sensorCount: 8, leakageProbability: 2, lastSensorUpdate: "15 min ago" },
   { id: "rame", name: "Rame", status: "normal", lat: 44.695, lng: 7.692, parentId: "marene", sensorCount: 5, leakageProbability: 1, lastSensorUpdate: "15 min ago" },
-  { id: "cavallermaggiore", name: "Cavallermaggiore", status: "anomaly", issueType: "leakage", severity: "critical", lat: 44.7737, lng: 7.6494, sensorCount: 24, leakageProbability: 68, lastSensorUpdate: "20 min ago" },
+  { id: "cavallermaggiore", name: "Cavallermaggiore", status: "anomaly", issueType: "leakage", severity: "warning", lat: 44.7737, lng: 7.6494, sensorCount: 24, leakageProbability: 35, lastSensorUpdate: "20 min ago" },
   { id: "fossano", name: "Fossano", status: "normal", lat: 44.5495, lng: 7.7233, sensorCount: 56, leakageProbability: 4, lastSensorUpdate: "5 min ago" },
   { id: "savigliano", name: "Savigliano", status: "normal", lat: 44.6425, lng: 7.6595, sensorCount: 38, leakageProbability: 7, lastSensorUpdate: "10 min ago" },
 ];
