@@ -5,10 +5,11 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Tooltip,
   Filler,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import Card from './Card';
 
 ChartJS.register(
@@ -16,6 +17,7 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Tooltip,
   Filler
 );
@@ -32,18 +34,23 @@ export interface SensorChartProps {
 }
 
 const generateMockData = (type: 'flow' | 'pressure') => {
-  const base = type === 'flow' ? 70 : 10;
-  const variance = type === 'flow' ? 10 : 2;
+  const base = type === 'flow' ? 60 : 10;
+  const amplitude = type === 'flow' ? 20 : 3;
+  const noise = type === 'flow' ? 3 : 0.5;
   const real: number[] = [];
   const predicted: number[] = [];
   
-  // Create a somewhat continuous stepped look
-  let currentReal = base;
+  // Phase offset so trough is overnight and peak is mid-day
+  const offset = Math.PI / 2;
+
   for (let i = 0; i < 24; i++) {
-    currentReal = currentReal + (Math.random() * variance - variance / 2);
-    real.push(currentReal);
-    // Predicted is slightly offset
-    predicted.push(currentReal + (Math.random() * (variance / 2) - variance / 4));
+    // Diurnal cycle simulating daily usage
+    const cyclicalValue = base + amplitude * Math.sin((i / 24) * Math.PI * 2 - offset);
+    const valueWithNoise = cyclicalValue + (Math.random() * noise - noise / 2);
+    
+    real.push(valueWithNoise);
+    // Predicted tracks closely to real
+    predicted.push(valueWithNoise + (Math.random() * (noise * 1.5) - (noise * 0.75)));
   }
   
   return { real, predicted };
@@ -54,7 +61,8 @@ export const SensorChart: React.FC<SensorChartProps> = ({ sensor }) => {
   const labels = useMemo(() => Array.from({ length: 24 }, (_, i) => `${i}:00`), []);
   
   const isFlow = sensor.type === 'flow';
-  const colorMain = isFlow ? '#3b82f6' : '#22c55e'; // blue or green
+  const colorMain = isFlow ? '#1b65b2' : '#5bb398';
+  const colorBarFill = colorMain + '99'; // ~60% opacity
   const colorPred = '#94a3b8'; // slate-400
 
   const latestReal = data.real[data.real.length - 1].toFixed(0);
@@ -63,26 +71,25 @@ export const SensorChart: React.FC<SensorChartProps> = ({ sensor }) => {
     labels,
     datasets: [
       {
+        type: 'bar' as const,
         label: 'Real value',
         data: data.real,
-        borderColor: colorMain,
-        backgroundColor: colorMain,
-        stepped: 'middle' as const,
-        borderWidth: 4,
-        pointRadius: 0,
-        pointHoverRadius: 0,
-        tension: 0,
+        backgroundColor: colorBarFill,
+        borderRadius: 4,
+        borderWidth: 0,
       },
       {
+        type: 'line' as const,
         label: 'Predicted',
         data: data.predicted,
         borderColor: colorPred,
         backgroundColor: colorPred,
-        stepped: 'middle' as const,
-        borderWidth: 4,
+        borderWidth: 2,
+        borderDash: [4, 4],
         pointRadius: 0,
         pointHoverRadius: 0,
-        tension: 0,
+        tension: 0.35,
+        fill: false,
       },
     ],
   };
@@ -126,7 +133,7 @@ export const SensorChart: React.FC<SensorChartProps> = ({ sensor }) => {
       </div>
       
       <div className="sensor-chart-wrapper" style={{ height: '140px', backgroundColor: '#f8fafc', borderRadius: '8px', padding: '16px 0', marginBottom: '16px' }}>
-        <Line data={chartData} options={options as any} />
+        <Bar data={chartData} options={options as any} />
       </div>
 
       <div className="sensor-footer">

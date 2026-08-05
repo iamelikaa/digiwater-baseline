@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { districts } from '../data/mockData';
 import { getEffectiveSeverity } from '../utils/statusHelpers';
 import GrafanaPlaceholder from '../components/GrafanaPlaceholder';
@@ -50,8 +51,11 @@ export const Aqueduct: React.FC<AqueductProps> = ({ cityId }) => {
 
       <section className="network-map-section">
         <Card className="panel-card" style={{ padding: 0, overflow: 'hidden' }}>
-          <div className="panel-header" style={{ padding: '24px 24px 16px' }}>
+          <div className="panel-header" style={{ padding: '24px 24px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h3 className="panel-title">Network Map &mdash; {city.name}</h3>
+            <Link to="/leak-history" className="view-dashboard-link">
+              View full dashboard &rarr;
+            </Link>
           </div>
           {cityId === 'marene' ? (
             <GrafanaPlaceholder />

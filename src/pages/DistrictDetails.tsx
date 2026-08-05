@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { districts } from '../data/mockData';
 import { getEffectiveSeverity } from '../utils/statusHelpers';
 import GrafanaPlaceholder from '../components/GrafanaPlaceholder';
 import Card from '../components/Card';
 import SensorChart from '../components/SensorChart';
 import SensorStatusCard from '../components/SensorStatusCard';
+import districtLeakHistoryPlaceholderImg from '../assets/district-leak-history-placeholder.png';
 
 export interface DistrictDetailsProps {
   cityId: string;
@@ -60,10 +62,19 @@ export const DistrictDetails: React.FC<DistrictDetailsProps> = ({ cityId, distri
 
       <section className="leak-history-section">
         <Card className="panel-card" style={{ padding: 0, overflow: 'hidden' }}>
-          <div className="panel-header" style={{ padding: '24px 24px 16px' }}>
+          <div className="panel-header" style={{ padding: '24px 24px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h3 className="panel-title">Leak History &mdash; Last 30 Days</h3>
+            <Link to="/leak-history" className="view-dashboard-link">
+              View full dashboard &rarr;
+            </Link>
           </div>
-          <GrafanaPlaceholder />
+          <GrafanaPlaceholder>
+            <img
+              src={districtLeakHistoryPlaceholderImg}
+              alt="District Leak History Dashboard Static Placeholder"
+              className="grafana-placeholder-image"
+            />
+          </GrafanaPlaceholder>
         </Card>
         <p style={{ marginTop: '12px', fontSize: '13px', color: '#64748b' }}>
           Source: Grafana &middot; {city.name} SCADA &middot; 15-min intervals
@@ -71,24 +82,27 @@ export const DistrictDetails: React.FC<DistrictDetailsProps> = ({ cityId, distri
       </section>
 
       <div className="district-details-layout" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '24px' }}>
-        <section className="sensor-data-section">
+        <section className="sensor-data-section" style={{ display: 'flex', flexDirection: 'column' }}>
           <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0f172a', marginBottom: '16px' }}>
             Sensor Data &ndash; Real-time & Historical
           </h3>
-          <div className="sensor-charts-grid" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {sensors.map(sensor => (
+          <div className="sensor-charts-grid" style={{ display: 'flex', flexDirection: 'column', gap: '16px', flex: 1 }}>
+            {sensors.slice(0, 2).map(sensor => (
               <SensorChart key={sensor.id} sensor={sensor} />
             ))}
           </div>
         </section>
 
-        <section className="leakage-probability-section">
+        <section className="leakage-probability-section" style={{ display: 'flex', flexDirection: 'column' }}>
           <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0f172a', marginBottom: '16px' }}>
             Leakage Probability &ndash; Status History
           </h3>
-          <Card className="panel-card" style={{ height: 'calc(100% - 44px)', minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', boxSizing: 'border-box' }}>
-            <p style={{ color: '#cbd5e1', fontSize: '14px', textAlign: 'center' }}>
-              status History Chart showing the probability of leakage
+          <Card className="panel-card" style={{ flex: 1, minHeight: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', boxSizing: 'border-box' }}>
+            <h4 style={{ margin: '0 0 8px 0', color: '#64748b', fontSize: '16px', fontWeight: 600 }}>
+              Status History Not Available
+            </h4>
+            <p style={{ color: '#94a3b8', fontSize: '14px', textAlign: 'center', margin: 0 }}>
+              Leakage probability trend data has not been integrated yet.
             </p>
           </Card>
         </section>
@@ -104,17 +118,7 @@ export const DistrictDetails: React.FC<DistrictDetailsProps> = ({ cityId, distri
               <SensorStatusCard key={sensor.id} sensor={sensor} />
             ))}
           </div>
-          <div style={{
-            border: '1px dashed #cbd5e1',
-            borderRadius: '8px',
-            padding: '12px',
-            textAlign: 'center',
-            color: '#94a3b8',
-            fontSize: '13px',
-            backgroundColor: '#f8fafc'
-          }}>
-            + additional sensors render here
-          </div>
+
         </Card>
       </section>
     </div>
