@@ -9,6 +9,7 @@ import RecentLeakEventsSection from '../components/RecentLeakEventsSection';
 import Aqueduct from './Aqueduct';
 import DistrictDetails from './DistrictDetails';
 import ReportLeak from './ReportLeak';
+import LeakHistory from './LeakHistory';
 import { districts, type District } from '../data/mockData';
 
 export const Overview: React.FC = () => {
@@ -21,6 +22,9 @@ export const Overview: React.FC = () => {
     if (location.pathname === '/report-leak') {
       setActiveItemId('report-leak');
       setActiveTitle('Report Leak');
+    } else if (location.pathname === '/leak-history') {
+      setActiveItemId('leak-history');
+      setActiveTitle('Leak History');
     } else if (districtId) {
       const district = districts.find(d => d.id === districtId);
       if (district) {
@@ -67,6 +71,8 @@ export const Overview: React.FC = () => {
             <Aqueduct cityId={cityId} />
           ) : activeItemId === 'report-leak' ? (
             <ReportLeak />
+          ) : activeItemId === 'leak-history' ? (
+            <LeakHistory />
           ) : (
             <Card className="content-placeholder-card">
               <h2>{activeTitle}</h2>

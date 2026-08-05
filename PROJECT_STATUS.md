@@ -15,8 +15,9 @@ finishing, per the instruction at the end of each task prompt).
 - Task 04.2 — District Details: Sensor Data Charts (Installed chart.js and react-chartjs-2. Created SensorChart component with local generator for mock timeseries data. Integrated side-by-side layout in DistrictDetails with Leakage Probability placeholder.)
 - Task 04.3 — District Details: Sensor Status Grid (Built SensorStatusCard component, added mock statuses to sensors array, and rendered dynamic grid in DistrictDetails with dashed placeholder.)
 - Task 05.1 — Report Leak Form (Added `/report-leak` route, built `ReportLeak` component with form state, added `LeakReport` type and `leakReports` array to mock data, updated Sidebar to navigate.)
+- Task 06.1 — Leak History (Added `/leak-history` route, built `LeakHistory` component with filter bar and paginated data table, implemented client-side sorting and filtering, and seeded mock data array).
 ## In progress / current task
-Task 06.1
+Task 07.1
 
 ## Finished tasks (by ID)
 - 01.1
@@ -30,13 +31,14 @@ Task 06.1
 - 04.2
 - 04.3
 - 05.1
+- 06.1
 ## Recommended next task
 01.1 → then 02.1, 02.2, 02.3 → 03.1, 03.2 → 04.1, 04.2, 04.3 → 05.1 → 06.1 → 07.1 → 08.1
 (see `Study-Materials/Tasks/README.md` for why this order)
 
 ## Mock data state
 - `src/data/mockData.ts` — extended with `sensorCount`, `leakageProbability`, and `lastSensorUpdate` in Tasks 03.1 and 03.2 for all districts and childless municipalities.
-- `src/data/mockData.ts` — added `LeakReport` interface and an empty `leakReports` array in Task 05.1 to persist submitted leak reports.
+- `src/data/mockData.ts` — added `LeakReport` interface and `leakReports` array in Task 05.1, seeded with 12 mock historical records in Task 06.1 to persist submitted leak reports and drive the Leak History table.
 - No new mock data fields or shared data sources were added in Tasks 01.1, 02.1, 02.2, 02.3, or 02.4.
 
 ## Branch

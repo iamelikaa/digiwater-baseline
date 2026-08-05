@@ -96,6 +96,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
     setExpandedMunicipality(null);
     if (id === 'report-leak') {
       navigate('/report-leak');
+    } else if (id === 'leak-history') {
+      navigate('/leak-history');
     }
   };
 

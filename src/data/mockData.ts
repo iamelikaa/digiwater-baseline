@@ -43,4 +43,17 @@ export interface LeakReport {
   notes?: string;
 }
 
-export const leakReports: LeakReport[] = [];
+export const leakReports: LeakReport[] = [
+  { id: "#001", city: "marene", district: "pellaverne", address: "Via Roma 12", date: "2026-04-03", type: "EXTERNAL", material: "ACCIAIO", diameter: "150", reportedBy: "L. Bianchi" },
+  { id: "#002", city: "marene", district: "marconi", address: "Via Garibaldi 4", date: "2026-04-03", type: "INTERNAL", material: "FCA", diameter: "90", reportedBy: "A. Rossi" },
+  { id: "#003", city: "marene", district: "concentrico", address: "Piazza Vittorio Emanuele", date: "2026-03-29", type: "EXTERNAL", material: "PEAD", diameter: "200", reportedBy: "A. Rossi" },
+  { id: "#004", city: "marene", district: "ponte", address: "Via Torino 45", date: "2026-03-25", type: "EXTERNAL", material: "PEAD", diameter: "200", reportedBy: "M. Verdi" },
+  { id: "#005", city: "marene", district: "marconi", address: "Corso Italia 8", date: "2026-03-20", type: "INTERNAL", material: "FCA", diameter: "90", reportedBy: "C. Bruno" },
+  { id: "#006", city: "savigliano", district: "", address: "Via Cavour 1", date: "2026-03-15", type: "INTERNAL", material: "PEAD", diameter: "110", reportedBy: "L. Bianchi" },
+  { id: "#007", city: "fossano", district: "", address: "Via Roma 100", date: "2026-03-10", type: "EXTERNAL", material: "ACCIAIO", diameter: "150", reportedBy: "L. Bianchi" },
+  { id: "#008", city: "marene", district: "salza", address: "Via Salza 2", date: "2026-03-05", type: "EXTERNAL", material: "FCA", diameter: "90", reportedBy: "M. Verdi" },
+  { id: "#009", city: "cavallermaggiore", district: "", address: "Via Bra 10", date: "2026-03-01", type: "INTERNAL", material: "PEAD", diameter: "110", reportedBy: "A. Rossi" },
+  { id: "#010", city: "marene", district: "sperina", address: "Via Sperina 5", date: "2026-02-25", type: "EXTERNAL", material: "ACCIAIO", diameter: "150", reportedBy: "L. Bianchi" },
+  { id: "#011", city: "savigliano", district: "", address: "Piazza del Popolo", date: "2026-02-20", type: "INTERNAL", material: "FCA", diameter: "90", reportedBy: "A. Rossi" },
+  { id: "#012", city: "fossano", district: "", address: "Via Torino 20", date: "2026-02-15", type: "EXTERNAL", material: "PEAD", diameter: "200", reportedBy: "M. Verdi" }
+];

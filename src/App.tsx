@@ -13,6 +13,7 @@ function App() {
         <Route path="/aqueduct/:cityId" element={<Overview />} />
         <Route path="/aqueduct/:cityId/:districtId" element={<Overview />} />
         <Route path="/report-leak" element={<Overview />} />
+        <Route path="/leak-history" element={<Overview />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
