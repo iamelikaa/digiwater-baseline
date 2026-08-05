@@ -1088,14 +1088,20 @@
   }
 }
 
-.form-group label {
+.leak-form .form-group label {
   display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.leak-form .form-group label.label-uppercase {
   font-size: 11px;
   font-weight: 600;
   color: #475569;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 8px;
 }
 
 .label-subtext {

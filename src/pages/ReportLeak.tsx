@@ -122,7 +122,7 @@ export const ReportLeak: React.FC = () => {
 
           <div className="form-row">
             <div className="form-group toggle-group">
-              <label>
+              <label className="label-uppercase">
                 TYPE OF REPORTING <span className="label-subtext">(reported by citizens or external parties)</span>
               </label>
               <div className="segmented-toggle">
@@ -146,7 +146,7 @@ export const ReportLeak: React.FC = () => {
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="material">PIPE MATERIAL <span className="label-subtext">— optional</span></label>
+              <label htmlFor="material" className="label-uppercase">PIPE MATERIAL <span className="label-subtext">— optional</span></label>
               <select id="material" value={material} onChange={(e) => setMaterial(e.target.value)}>
                 <option value="" disabled>ACCIAIO / PEAD / FCA</option>
                 <option value="ACCIAIO">ACCIAIO</option>
@@ -155,7 +155,7 @@ export const ReportLeak: React.FC = () => {
               </select>
             </div>
             <div className="form-group">
-              <label htmlFor="diameter">PIPE DIAMETER <span className="label-subtext">— optional</span></label>
+              <label htmlFor="diameter" className="label-uppercase">PIPE DIAMETER <span className="label-subtext">— optional</span></label>
               <input 
                 type="text" 
                 id="diameter" 
@@ -167,7 +167,7 @@ export const ReportLeak: React.FC = () => {
           </div>
 
           <div className="form-group full-width">
-            <label htmlFor="notes">ADDITIONAL NOTES <span className="label-subtext">— optional</span></label>
+            <label htmlFor="notes" className="label-uppercase">ADDITIONAL NOTES <span className="label-subtext">— optional</span></label>
             <textarea 
               id="notes" 
               value={notes} 
