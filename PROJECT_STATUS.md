@@ -9,9 +9,11 @@ finishing, per the instruction at the end of each task prompt).
 - Task 02.2 — Overview Status Cards (four KPI control-room status cards in a responsive grid, colored accent bars, and dynamic metrics derived from mock districts)
 - Task 02.3 — Network Overview Panel (Map + Issues Table side by side, Leaflet polygon DMA shapes colored by effective health status, child anomaly propagation helper, and anomalies table)
 - Task 02.4 — Overview: Recent Leak Events (aggregated view section, link to /leak-history, reusable static GrafanaScreenshot placeholder component, and source caption)
+- Task 03.1 — City Details: Header + Network Map (Added `/aqueduct/:cityId` route within existing layout, wired Sidebar municipalities to React Router navigation, and built page header with dynamic district/sensor counts and effective status pill)
+- Task 03.2 — City Details: Districts Table (Built sortable table component for child districts with leakage probability bars, extended mock data with `leakageProbability` and `lastSensorUpdate`, and added `/aqueduct/:cityId/:districtId` navigation)
 
 ## In progress / current task
-Task 03.1 (`Study-Materials/Tasks/03_Dashboard/03.1-*.md`)
+Task 04.1 (`Study-Materials/Tasks/04_District_Details/04.1-*.md`)
 
 ## Finished tasks (by ID)
 - 01.1
@@ -19,15 +21,15 @@ Task 03.1 (`Study-Materials/Tasks/03_Dashboard/03.1-*.md`)
 - 02.2
 - 02.3
 - 02.4
+- 03.1
+- 03.2
 
 ## Recommended next task
 01.1 → then 02.1, 02.2, 02.3 → 03.1, 03.2 → 04.1, 04.2, 04.3 → 05.1 → 06.1 → 07.1 → 08.1
 (see `Study-Materials/Tasks/README.md` for why this order)
 
 ## Mock data state
-- `src/data/mockData.ts` — districts only (id, name, status, lat, lng, parentId). Not yet
-  extended with sensor counts, leakage probability, or last-update fields (needed from
-  Task 03.2 onward).
+- `src/data/mockData.ts` — extended with `sensorCount`, `leakageProbability`, and `lastSensorUpdate` in Tasks 03.1 and 03.2 for all districts and childless municipalities.
 - No shared leak-reports data source yet (needed from Task 05.1 onward, read by 06.1).
 - No new mock data fields or shared data sources were added in Tasks 01.1, 02.1, 02.2, 02.3, or 02.4.
 

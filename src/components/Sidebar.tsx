@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { districts } from '../data/mockData';
 import type { District } from '../data/mockData';
 
@@ -65,6 +66,7 @@ const ChevronIcon: React.FC<{ expanded: boolean }> = ({ expanded }) => (
 );
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) => {
+  const navigate = useNavigate();
   const [isAqueductExpanded, setIsAqueductExpanded] = useState<boolean>(false);
   const [expandedMunicipalities, setExpandedMunicipalities] = useState<string[]>(['marene']);
 
@@ -83,6 +85,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
         prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
       );
     }
+    navigate(`/aqueduct/${id}`);
   };
 
   return (

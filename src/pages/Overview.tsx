@@ -1,15 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import TopBar from '../components/TopBar';
 import Card from '../components/Card';
 import OverviewStatusCards from '../components/OverviewStatusCards';
 import NetworkOverviewPanel from '../components/NetworkOverviewPanel';
 import RecentLeakEventsSection from '../components/RecentLeakEventsSection';
-import type { District } from '../data/mockData';
+import Aqueduct from './Aqueduct';
+import { districts, type District } from '../data/mockData';
 
 export const Overview: React.FC = () => {
-  const [activeItemId, setActiveItemId] = useState<string>('overview');
+  const { cityId } = useParams<{ cityId: string }>();
+  const [activeItemId, setActiveItemId] = useState<string>(cityId || 'overview');
   const [activeTitle, setActiveTitle] = useState<string>('Overview');
+
+  useEffect(() => {
+    if (cityId) {
+      const district = districts.find(d => d.id === cityId);
+      if (district) {
+        setActiveItemId(cityId);
+        setActiveTitle(district.name);
+      }
+    } else {
+      setActiveItemId('overview');
+      setActiveTitle('Overview');
+    }
+  }, [cityId]);
 
   const handleSelectItem = (id: string, title: string) => {
     setActiveItemId(id);
@@ -33,6 +49,8 @@ export const Overview: React.FC = () => {
               <NetworkOverviewPanel onSelectDistrict={handleSelectDistrict} />
               <RecentLeakEventsSection />
             </div>
+          ) : cityId && activeItemId === cityId ? (
+            <Aqueduct cityId={cityId} />
           ) : (
             <Card className="content-placeholder-card">
               <h2>{activeTitle}</h2>
