@@ -163,7 +163,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
                                     className={`nav-item nav-nested-item ${
                                       isDistrictActive ? 'active' : ''
                                     }`}
-                                    onClick={() => onSelectItem(district.id, district.name)}
+                                    onClick={() => {
+                                      onSelectItem(district.id, district.name);
+                                      navigate(`/aqueduct/${municipality.id}/${district.id}`);
+                                    }}
                                   >
                                     <span className="nav-label">{district.name}</span>
                                   </button>

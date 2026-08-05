@@ -11,9 +11,12 @@ finishing, per the instruction at the end of each task prompt).
 - Task 02.4 — Overview: Recent Leak Events (aggregated view section, link to /leak-history, reusable static GrafanaScreenshot placeholder component, and source caption)
 - Task 03.1 — City Details: Header + Network Map (Added `/aqueduct/:cityId` route within existing layout, wired Sidebar municipalities to React Router navigation, and built page header with dynamic district/sensor counts and effective status pill)
 - Task 03.2 — City Details: Districts Table (Built sortable table component for child districts with leakage probability bars, extended mock data with `leakageProbability` and `lastSensorUpdate`, and added `/aqueduct/:cityId/:districtId` navigation)
+- Task 04.1 — District Details: Header + Leak History (Added route `/aqueduct/:cityId/:districtId`, built DistrictDetails page with dynamic header and static Grafana placeholder for Leak History, updated Sidebar for district navigation)
+- Task 04.2 — District Details: Sensor Data Charts (Installed chart.js and react-chartjs-2. Created SensorChart component with local generator for mock timeseries data. Integrated side-by-side layout in DistrictDetails with Leakage Probability placeholder.)
+- Task 04.3 — District Details: Sensor Status Grid (Built SensorStatusCard component, added mock statuses to sensors array, and rendered dynamic grid in DistrictDetails with dashed placeholder.)
 
 ## In progress / current task
-Task 04.1 (`Study-Materials/Tasks/04_District_Details/04.1-*.md`)
+Task 05.1 (`Study-Materials/Tasks/05_Report_Leak/05.1-*.md`)
 
 ## Finished tasks (by ID)
 - 01.1
@@ -23,6 +26,9 @@ Task 04.1 (`Study-Materials/Tasks/04_District_Details/04.1-*.md`)
 - 02.4
 - 03.1
 - 03.2
+- 04.1
+- 04.2
+- 04.3
 
 ## Recommended next task
 01.1 → then 02.1, 02.2, 02.3 → 03.1, 03.2 → 04.1, 04.2, 04.3 → 05.1 → 06.1 → 07.1 → 08.1

@@ -7,25 +7,32 @@ import OverviewStatusCards from '../components/OverviewStatusCards';
 import NetworkOverviewPanel from '../components/NetworkOverviewPanel';
 import RecentLeakEventsSection from '../components/RecentLeakEventsSection';
 import Aqueduct from './Aqueduct';
+import DistrictDetails from './DistrictDetails';
 import { districts, type District } from '../data/mockData';
 
 export const Overview: React.FC = () => {
-  const { cityId } = useParams<{ cityId: string }>();
-  const [activeItemId, setActiveItemId] = useState<string>(cityId || 'overview');
+  const { cityId, districtId } = useParams<{ cityId: string; districtId: string }>();
+  const [activeItemId, setActiveItemId] = useState<string>(districtId || cityId || 'overview');
   const [activeTitle, setActiveTitle] = useState<string>('Overview');
 
   useEffect(() => {
-    if (cityId) {
-      const district = districts.find(d => d.id === cityId);
+    if (districtId) {
+      const district = districts.find(d => d.id === districtId);
       if (district) {
-        setActiveItemId(cityId);
+        setActiveItemId(districtId);
         setActiveTitle(district.name);
+      }
+    } else if (cityId) {
+      const city = districts.find(d => d.id === cityId);
+      if (city) {
+        setActiveItemId(cityId);
+        setActiveTitle(city.name);
       }
     } else {
       setActiveItemId('overview');
       setActiveTitle('Overview');
     }
-  }, [cityId]);
+  }, [cityId, districtId]);
 
   const handleSelectItem = (id: string, title: string) => {
     setActiveItemId(id);
@@ -49,6 +56,8 @@ export const Overview: React.FC = () => {
               <NetworkOverviewPanel onSelectDistrict={handleSelectDistrict} />
               <RecentLeakEventsSection />
             </div>
+          ) : districtId && activeItemId === districtId ? (
+            <DistrictDetails cityId={cityId!} districtId={districtId} />
           ) : cityId && activeItemId === cityId ? (
             <Aqueduct cityId={cityId} />
           ) : (
