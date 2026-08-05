@@ -68,7 +68,7 @@ const ChevronIcon: React.FC<{ expanded: boolean }> = ({ expanded }) => (
 export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) => {
   const navigate = useNavigate();
   const [isAqueductExpanded, setIsAqueductExpanded] = useState<boolean>(false);
-  const [expandedMunicipalities, setExpandedMunicipalities] = useState<string[]>(['marene']);
+  const [expandedMunicipality, setExpandedMunicipality] = useState<string | null>(null);
 
   const topLevelMunicipalities: District[] = districts.filter((d) => !d.parentId);
   const getChildDistricts = (parentId: string): District[] =>
@@ -80,11 +80,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
 
   const handleMunicipalityClick = (id: string, name: string, hasChildren: boolean) => {
     onSelectItem(id, name);
-    if (hasChildren) {
-      setExpandedMunicipalities((prev) =>
-        prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-      );
-    }
+    setExpandedMunicipality((prev) => {
+      if (hasChildren) {
+        return prev === id ? null : id;
+      }
+      return null;
+    });
     navigate(`/aqueduct/${id}`);
   };
 
@@ -124,12 +125,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
               <ChevronIcon expanded={isAqueductExpanded} />
             </button>
 
-            {isAqueductExpanded && (
+            <div className={`nav-expandable-container ${isAqueductExpanded ? 'expanded' : ''}`}>
               <ul className="nav-sublist">
                 {topLevelMunicipalities.map((municipality) => {
                   const children = getChildDistricts(municipality.id);
                   const hasChildren = children.length > 0;
-                  const isMunicipalityExpanded = expandedMunicipalities.includes(municipality.id);
+                  const isMunicipalityExpanded = expandedMunicipality === municipality.id;
                   const isMunicipalityActive = activeItemId === municipality.id;
 
                   return (
@@ -144,36 +145,39 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
                             hasChildren
                           )
                         }
+                        aria-expanded={hasChildren ? isMunicipalityExpanded : undefined}
                       >
                         <span className="nav-label">{municipality.name}</span>
                         {hasChildren && <ChevronIcon expanded={isMunicipalityExpanded} />}
                       </button>
 
-                      {hasChildren && isMunicipalityExpanded && (
-                        <ul className="nav-sublist nav-nested-list">
-                          {children.map((district) => {
-                            const isDistrictActive = activeItemId === district.id;
-                            return (
-                              <li key={district.id}>
-                                <button
-                                  type="button"
-                                  className={`nav-item nav-nested-item ${
-                                    isDistrictActive ? 'active' : ''
-                                  }`}
-                                  onClick={() => onSelectItem(district.id, district.name)}
-                                >
-                                  <span className="nav-label">{district.name}</span>
-                                </button>
-                              </li>
-                            );
-                          })}
-                        </ul>
+                      {hasChildren && (
+                        <div className={`nav-expandable-container ${isMunicipalityExpanded ? 'expanded' : ''}`}>
+                          <ul className="nav-sublist nav-nested-list">
+                            {children.map((district) => {
+                              const isDistrictActive = activeItemId === district.id;
+                              return (
+                                <li key={district.id}>
+                                  <button
+                                    type="button"
+                                    className={`nav-item nav-nested-item ${
+                                      isDistrictActive ? 'active' : ''
+                                    }`}
+                                    onClick={() => onSelectItem(district.id, district.name)}
+                                  >
+                                    <span className="nav-label">{district.name}</span>
+                                  </button>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
                       )}
                     </li>
                   );
                 })}
               </ul>
-            )}
+            </div>
           </li>
 
           <li>
