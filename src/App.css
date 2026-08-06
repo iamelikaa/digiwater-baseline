@@ -483,7 +483,9 @@
 /* Dashboard Content Area */
 .dashboard-content {
   flex: 1;
-  padding: 32px;
+  /* Extra right padding reserves room for the floating chat button (fixed,
+     bottom-right on every page) so page content never sits underneath it. */
+  padding: 32px 96px 32px 32px;
   display: flex;
   align-items: flex-start;
 }

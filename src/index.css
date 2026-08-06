@@ -48,6 +48,13 @@
   box-sizing: border-box;
 }
 
+html {
+  /* Always reserve the scrollbar's width, whether or not a given page is tall
+     enough to need it, so the content area is the same width on every page
+     instead of shifting by the scrollbar's width page to page. */
+  scrollbar-gutter: stable;
+}
+
 #root {
   width: 100%;
   min-height: 100svh;

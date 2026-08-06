@@ -68,17 +68,29 @@ export const DistrictDetails: React.FC<DistrictDetailsProps> = ({ cityId, distri
               View full dashboard &rarr;
             </Link>
           </div>
-          <GrafanaPlaceholder>
-            <img
-              src={districtLeakHistoryPlaceholderImg}
-              alt="District Leak History Dashboard Static Placeholder"
-              className="grafana-placeholder-image"
-            />
-          </GrafanaPlaceholder>
+          {districtId === 'marconi' ? (
+            <GrafanaPlaceholder>
+              <img
+                src={districtLeakHistoryPlaceholderImg}
+                alt="District Leak History Dashboard Static Placeholder"
+                className="grafana-placeholder-image"
+              />
+            </GrafanaPlaceholder>
+          ) : (
+            <div className="issues-empty-state" style={{ padding: '60px 20px' }}>
+              <div className="empty-state-icon" style={{ backgroundColor: '#f1f5f9', color: '#64748b' }}>ℹ️</div>
+              <h4 className="empty-state-title">Leak History Not Available</h4>
+              <p className="empty-state-text">
+                Telemetry data for {district.name} has not been integrated yet.
+              </p>
+            </div>
+          )}
         </Card>
-        <p style={{ marginTop: '12px', fontSize: '13px', color: '#64748b' }}>
-          Source: Grafana &middot; {city.name} SCADA &middot; 15-min intervals
-        </p>
+        {districtId === 'marconi' && (
+          <p style={{ marginTop: '12px', fontSize: '13px', color: '#64748b' }}>
+            Source: Grafana &middot; {city.name} SCADA &middot; 15-min intervals
+          </p>
+        )}
       </section>
 
       <div className="district-details-layout" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '24px' }}>
