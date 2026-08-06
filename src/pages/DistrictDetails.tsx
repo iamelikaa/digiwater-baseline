@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { districts } from '../data/mockData';
 import { getEffectiveSeverity } from '../utils/statusHelpers';
 import GrafanaPlaceholder from '../components/GrafanaPlaceholder';
@@ -8,21 +8,31 @@ import SensorChart from '../components/SensorChart';
 import SensorStatusCard from '../components/SensorStatusCard';
 import districtLeakHistoryPlaceholderImg from '../assets/district-leak-history-placeholder.png';
 
-export interface DistrictDetailsProps {
-  cityId: string;
-  districtId: string;
-}
-
-export const DistrictDetails: React.FC<DistrictDetailsProps> = ({ cityId, districtId }) => {
+export const DistrictDetails: React.FC = () => {
+  const { cityId, districtId } = useParams<{ cityId: string; districtId: string }>();
   const city = useMemo(() => districts.find(d => d.id === cityId), [cityId]);
   const district = useMemo(() => districts.find(d => d.id === districtId), [districtId]);
 
   const sensors = useMemo(() => {
     const count = district?.sensorCount || 2;
+    // Sensor-level status is derived from the district's actual reported
+    // severity instead of an arbitrary index pattern: a "Normal" district
+    // now shows all-normal sensors, and a "Warning"/"Critical" district
+    // surfaces the sensor(s) responsible, so the sensor grid always agrees
+    // with the status pill shown in the page header above it.
+    const severity = district ? getEffectiveSeverity(district) : 'normal';
+
     return Array.from({ length: count }, (_, i) => {
       let status: 'normal' | 'warning' | 'critical' = 'normal';
-      if (i % 5 === 1) status = 'warning';
-      if (i % 7 === 2) status = 'critical';
+      const isLast = i === count - 1;
+      const isSecondToLast = i === count - 2;
+
+      if (severity === 'critical') {
+        if (isLast) status = 'critical';
+        else if (isSecondToLast) status = 'warning';
+      } else if (severity === 'warning') {
+        if (isLast) status = 'warning';
+      }
 
       return {
         id: `sensor-${i + 1}`,
@@ -32,7 +42,7 @@ export const DistrictDetails: React.FC<DistrictDetailsProps> = ({ cityId, distri
         status,
       };
     });
-  }, [district?.sensorCount]);
+  }, [district]);
 
   if (!city || !district) {
     return (
@@ -47,28 +57,28 @@ export const DistrictDetails: React.FC<DistrictDetailsProps> = ({ cityId, distri
   const statusLabel = severity.charAt(0).toUpperCase() + severity.slice(1);
 
   return (
-    <div className="district-details-dashboard" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <header className="page-header" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <h1 className="page-title" style={{ margin: 0, fontSize: '28px', fontWeight: 700, color: '#0f172a' }}>{district.name}</h1>
-        <span className="page-subtitle" style={{ color: '#64748b', fontSize: '15px', fontWeight: 600 }}>
+    <div className="entity-details-page">
+      <header className="entity-header">
+        <h1 className="entity-title">{district.name}</h1>
+        <span className="entity-subtitle">
           {city.name} &middot; {district.sensorCount || 0} sensors
         </span>
-        <span className={`status-pill status-pill-${severity}`} style={{ marginLeft: '12px', fontSize: '13px', padding: '6px 14px' }}>
-           {severity === 'warning' && <span style={{marginRight: '6px'}}>⚠️</span>}
-           {severity === 'critical' && <span style={{marginRight: '6px'}}>🚨</span>}
+        <span className={`status-pill status-pill-${severity} entity-status-pill`}>
+           {severity === 'warning' && <span className="entity-status-pill-icon">⚠️</span>}
+           {severity === 'critical' && <span className="entity-status-pill-icon">🚨</span>}
            {statusLabel}
         </span>
       </header>
 
       <section className="leak-history-section">
-        <Card className="panel-card" style={{ padding: 0, overflow: 'hidden' }}>
-          <div className="panel-header" style={{ padding: '24px 24px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Card className="panel-card panel-card-flush">
+          <div className="panel-header-row">
             <h3 className="panel-title">Leak History &mdash; Last 30 Days</h3>
-            <Link to="/leak-history" className="view-dashboard-link">
+            <Link to={`/leak-history?city=${city.id}&district=${district.id}`} className="view-dashboard-link">
               View full dashboard &rarr;
             </Link>
           </div>
-          {districtId === 'marconi' ? (
+          {district.id === 'marconi' ? (
             <GrafanaPlaceholder>
               <img
                 src={districtLeakHistoryPlaceholderImg}
@@ -77,8 +87,8 @@ export const DistrictDetails: React.FC<DistrictDetailsProps> = ({ cityId, distri
               />
             </GrafanaPlaceholder>
           ) : (
-            <div className="issues-empty-state" style={{ padding: '60px 20px' }}>
-              <div className="empty-state-icon" style={{ backgroundColor: '#f1f5f9', color: '#64748b' }}>ℹ️</div>
+            <div className="issues-empty-state entity-empty-state">
+              <div className="empty-state-icon entity-empty-state-icon">ℹ️</div>
               <h4 className="empty-state-title">Leak History Not Available</h4>
               <p className="empty-state-text">
                 Telemetry data for {district.name} has not been integrated yet.
@@ -86,51 +96,40 @@ export const DistrictDetails: React.FC<DistrictDetailsProps> = ({ cityId, distri
             </div>
           )}
         </Card>
-        {districtId === 'marconi' && (
-          <p style={{ marginTop: '12px', fontSize: '13px', color: '#64748b' }}>
+        {district.id === 'marconi' && (
+          <p className="leak-history-source-caption">
             Source: Grafana &middot; {city.name} SCADA &middot; 15-min intervals
           </p>
         )}
       </section>
 
-      <div className="district-details-layout" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '24px' }}>
-        <section className="sensor-data-section" style={{ display: 'flex', flexDirection: 'column' }}>
-          <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0f172a', marginBottom: '16px' }}>
-            Sensor Data &ndash; Real-time & Historical
-          </h3>
-          <div className="sensor-charts-grid" style={{ display: 'flex', flexDirection: 'column', gap: '16px', flex: 1 }}>
+      <div className="details-two-col-layout">
+        <section className="details-column">
+          <h3 className="subsection-title">Sensor Data &ndash; Real-time & Historical</h3>
+          <div className="sensor-charts-grid">
             {sensors.slice(0, 2).map(sensor => (
               <SensorChart key={sensor.id} sensor={sensor} />
             ))}
           </div>
         </section>
 
-        <section className="leakage-probability-section" style={{ display: 'flex', flexDirection: 'column' }}>
-          <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0f172a', marginBottom: '16px' }}>
-            Leakage Probability &ndash; Status History
-          </h3>
-          <Card className="panel-card" style={{ flex: 1, minHeight: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', boxSizing: 'border-box' }}>
-            <h4 style={{ margin: '0 0 8px 0', color: '#64748b', fontSize: '16px', fontWeight: 600 }}>
-              Status History Not Available
-            </h4>
-            <p style={{ color: '#94a3b8', fontSize: '14px', textAlign: 'center', margin: 0 }}>
-              Leakage probability trend data has not been integrated yet.
-            </p>
+        <section className="details-column">
+          <h3 className="subsection-title">Leakage Probability &ndash; Status History</h3>
+          <Card className="panel-card leakage-probability-card">
+            <h4>Status History Not Available</h4>
+            <p>Leakage probability trend data has not been integrated yet.</p>
           </Card>
         </section>
       </div>
 
       <section className="sensor-status-section">
-        <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0f172a', marginBottom: '16px' }}>
-          Sensor Status
-        </h3>
-        <Card className="panel-card" style={{ padding: '24px' }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '16px' }}>
+        <h3 className="subsection-title">Sensor Status</h3>
+        <Card className="panel-card sensor-status-panel">
+          <div className="sensor-status-grid">
             {sensors.map(sensor => (
               <SensorStatusCard key={sensor.id} sensor={sensor} />
             ))}
           </div>
-
         </Card>
       </section>
     </div>

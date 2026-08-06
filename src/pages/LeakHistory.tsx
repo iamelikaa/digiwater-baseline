@@ -1,21 +1,29 @@
 import React, { useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Card from '../components/Card';
 import { districts, leakReports } from '../data/mockData';
 
 const PAGE_SIZE = 5;
 
 export const LeakHistory: React.FC = () => {
+  // "View full dashboard" links from Aqueduct/DistrictDetails pass ?city=&district=
+  // so arriving here from a specific city/district pre-applies that filter
+  // instead of always landing on the unfiltered, all-cities list.
+  const [searchParams] = useSearchParams();
+  const initialCity = searchParams.get('city') || '';
+  const initialDistrict = searchParams.get('district') || '';
+
   const [filterDraft, setFilterDraft] = useState({
-    city: '',
-    district: '',
+    city: initialCity,
+    district: initialDistrict,
     type: '',
     fromDate: '',
     toDate: '',
   });
 
   const [appliedFilters, setAppliedFilters] = useState({
-    city: '',
-    district: '',
+    city: initialCity,
+    district: initialDistrict,
     type: '',
     fromDate: '',
     toDate: '',
@@ -43,8 +51,11 @@ export const LeakHistory: React.FC = () => {
     return dateStr;
   };
 
-  // Helper to get name
+  // Helper to get name. Some seeded reports (e.g. cities with no sub-districts)
+  // have an empty district id, which should render as "-" like the other
+  // optional columns rather than as a blank cell.
   const getName = (id: string) => {
+    if (!id) return '-';
     const item = districts.find(d => d.id === id);
     return item ? item.name : id;
   };

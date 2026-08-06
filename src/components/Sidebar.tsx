@@ -3,11 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { districts } from '../data/mockData';
 import type { District } from '../data/mockData';
 import { getEffectiveSeverity } from '../utils/statusHelpers';
-
-export interface SidebarProps {
-  activeItemId: string;
-  onSelectItem: (id: string, title: string) => void;
-}
+import { useActiveNav } from '../hooks/useActiveNav';
 
 const OverviewIcon: React.FC = () => (
   <svg className="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -66,8 +62,9 @@ const ChevronIcon: React.FC<{ expanded: boolean }> = ({ expanded }) => (
   </svg>
 );
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) => {
+export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
+  const { activeItemId } = useActiveNav();
   const [isAqueductExpanded, setIsAqueductExpanded] = useState<boolean>(false);
   const [expandedMunicipality, setExpandedMunicipality] = useState<string | null>(null);
 
@@ -79,8 +76,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
     setIsAqueductExpanded((prev) => !prev);
   };
 
-  const handleMunicipalityClick = (id: string, name: string, hasChildren: boolean) => {
-    onSelectItem(id, name);
+  const handleMunicipalityClick = (id: string, hasChildren: boolean) => {
     setExpandedMunicipality((prev) => {
       if (hasChildren) {
         return prev === id ? null : id;
@@ -90,8 +86,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
     navigate(`/aqueduct/${id}`);
   };
 
-  const handleTopLevelClick = (id: string, name: string) => {
-    onSelectItem(id, name);
+  const handleTopLevelClick = (id: string) => {
     setIsAqueductExpanded(false);
     setExpandedMunicipality(null);
     if (id === 'report-leak') {
@@ -122,7 +117,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
             <button
               type="button"
               className={`nav-item ${activeItemId === 'overview' ? 'active' : ''}`}
-              onClick={() => handleTopLevelClick('overview', 'Overview')}
+              onClick={() => handleTopLevelClick('overview')}
             >
               <OverviewIcon />
               <span className="nav-label">Overview</span>
@@ -158,13 +153,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
                       <button
                         type="button"
                         className={`nav-item nav-subitem ${munActiveClass}`}
-                        onClick={() =>
-                          handleMunicipalityClick(
-                            municipality.id,
-                            municipality.name,
-                            hasChildren
-                          )
-                        }
+                        onClick={() => handleMunicipalityClick(municipality.id, hasChildren)}
                         aria-expanded={hasChildren ? isMunicipalityExpanded : undefined}
                       >
                         <span className="nav-label">{municipality.name}</span>
@@ -186,10 +175,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
                                   <button
                                     type="button"
                                     className={`nav-item nav-nested-item ${distActiveClass}`}
-                                    onClick={() => {
-                                      onSelectItem(district.id, district.name);
-                                      navigate(`/aqueduct/${municipality.id}/${district.id}`);
-                                    }}
+                                    onClick={() => navigate(`/aqueduct/${municipality.id}/${district.id}`)}
                                   >
                                     <span className="nav-label">{district.name}</span>
                                   </button>
@@ -210,7 +196,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
             <button
               type="button"
               className={`nav-item ${activeItemId === 'report-leak' ? 'active' : ''}`}
-              onClick={() => handleTopLevelClick('report-leak', 'Report Leak')}
+              onClick={() => handleTopLevelClick('report-leak')}
             >
               <ReportLeakIcon />
               <span className="nav-label">Report Leak</span>
@@ -221,7 +207,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
             <button
               type="button"
               className={`nav-item ${activeItemId === 'leak-history' ? 'active' : ''}`}
-              onClick={() => handleTopLevelClick('leak-history', 'Leak History')}
+              onClick={() => handleTopLevelClick('leak-history')}
             >
               <LeakHistoryIcon />
               <span className="nav-label">Leak History</span>
@@ -235,7 +221,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
         <button
           type="button"
           className={`nav-item ${activeItemId === 'settings' ? 'active' : ''}`}
-          onClick={() => handleTopLevelClick('settings', 'Settings')}
+          onClick={() => handleTopLevelClick('settings')}
         >
           <SettingsIcon />
           <span className="nav-label">Settings</span>

@@ -8,6 +8,7 @@ import {
   BarElement,
   Tooltip,
   Filler,
+  type ChartData,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import Card from './Card';
@@ -133,7 +134,10 @@ export const SensorChart: React.FC<SensorChartProps> = ({ sensor }) => {
       </div>
       
       <div className="sensor-chart-wrapper" style={{ height: '140px', backgroundColor: '#f8fafc', borderRadius: '8px', padding: '16px 0', marginBottom: '16px' }}>
-        <Bar data={chartData} options={options as any} />
+        {/* This is a mixed bar+line chart; react-chartjs-2's <Bar> type only
+            describes single-type "bar" datasets, so the combined data shape
+            (bar + line dataset) needs an explicit cast here. */}
+        <Bar data={chartData as ChartData<'bar', number[], string>} options={options as any} />
       </div>
 
       <div className="sensor-footer">

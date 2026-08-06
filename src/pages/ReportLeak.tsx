@@ -25,8 +25,11 @@ export const ReportLeak: React.FC = () => {
     e.preventDefault();
     if (!city || !district || !address || !date || !type) return;
 
+    // Match the seeded "#001" / "#002" style IDs instead of a raw timestamp,
+    // so newly submitted reports look consistent with existing data.
+    const nextNumber = leakReports.length + 1;
     const newReport: LeakReport = {
-      id: Date.now().toString(),
+      id: `#${String(nextNumber).padStart(3, '0')}`,
       city,
       district,
       address,

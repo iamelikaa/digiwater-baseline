@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { districts } from '../data/mockData';
-import type { District } from '../data/mockData';
 import { getEffectiveSeverity } from '../utils/statusHelpers';
 
 export interface DistrictsTableProps {
@@ -10,8 +9,7 @@ export interface DistrictsTableProps {
 
 export const DistrictsTable: React.FC<DistrictsTableProps> = ({ cityId }) => {
   const navigate = useNavigate();
-  
-  const city = districts.find(d => d.id === cityId);
+
   const childDistricts = districts.filter(d => d.parentId === cityId);
   
   const sortedDistricts = [...childDistricts].sort((a, b) => {
