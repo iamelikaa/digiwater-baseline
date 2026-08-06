@@ -10,6 +10,7 @@ import Aqueduct from './Aqueduct';
 import DistrictDetails from './DistrictDetails';
 import ReportLeak from './ReportLeak';
 import LeakHistory from './LeakHistory';
+import ChatAssistant from '../components/ChatAssistant';
 import { districts, type District } from '../data/mockData';
 
 export const Overview: React.FC = () => {
@@ -87,6 +88,7 @@ export const Overview: React.FC = () => {
           )}
         </main>
       </div>
+      <ChatAssistant />
     </div>
   );
 };
