@@ -1,4 +1,5 @@
 import React from 'react';
+import { currentUser } from '../data/mockData';
 
 export interface TopBarProps {
   title: string;
@@ -13,11 +14,11 @@ export const TopBar: React.FC<TopBarProps> = ({ title }) => {
       <div className="topbar-right">
         <div className="user-identity" aria-label="User identity">
           <div className="user-avatar" aria-hidden="true">
-            OP
+            {currentUser.initials}
           </div>
           <div className="user-info">
-            <span className="user-email">operator@digiwater.it</span>
-            <span className="user-role">Operator</span>
+            <span className="user-email">{currentUser.email}</span>
+            <span className="user-role">{currentUser.role}</span>
           </div>
         </div>
       </div>

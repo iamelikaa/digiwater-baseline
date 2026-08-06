@@ -98,6 +98,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItemId, onSelectItem }) 
       navigate('/report-leak');
     } else if (id === 'leak-history') {
       navigate('/leak-history');
+    } else if (id === 'settings') {
+      navigate('/settings');
+    } else if (id === 'overview') {
+      navigate('/overview');
     }
   };
 

@@ -57,3 +57,19 @@ export const leakReports: LeakReport[] = [
   { id: "#011", city: "savigliano", district: "", address: "Via ...", date: "2026-02-20", type: "INTERNAL", material: "FCA", diameter: "90", reportedBy: "A. Rossi" },
   { id: "#012", city: "fossano", district: "", address: "Via ...", date: "2026-02-15", type: "EXTERNAL", material: "PEAD", diameter: "200", reportedBy: "M. Verdi" }
 ];
+
+export interface UserProfile {
+  initials: string;
+  name: string;
+  email: string;
+  role: string;
+  phone: string;
+}
+
+export const currentUser: UserProfile = {
+  initials: "OP",
+  name: "Operator Name",
+  email: "operator@digiwater.it",
+  role: "Operator",
+  phone: "",
+};

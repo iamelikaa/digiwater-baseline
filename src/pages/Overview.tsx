@@ -10,6 +10,7 @@ import Aqueduct from './Aqueduct';
 import DistrictDetails from './DistrictDetails';
 import ReportLeak from './ReportLeak';
 import LeakHistory from './LeakHistory';
+import Settings from './Settings';
 import ChatAssistant from '../components/ChatAssistant';
 import { districts, type District } from '../data/mockData';
 
@@ -27,6 +28,9 @@ export const Overview: React.FC = () => {
     } else if (location.pathname === '/leak-history') {
       setActiveItemId('leak-history');
       setActiveTitle('Leak History');
+    } else if (location.pathname === '/settings') {
+      setActiveItemId('settings');
+      setActiveTitle('User Profile');
     } else if (districtId) {
       const district = districts.find(d => d.id === districtId);
       if (district) {
@@ -78,6 +82,8 @@ export const Overview: React.FC = () => {
             <ReportLeak />
           ) : activeItemId === 'leak-history' ? (
             <LeakHistory />
+          ) : activeItemId === 'settings' ? (
+            <Settings />
           ) : (
             <Card className="content-placeholder-card">
               <h2>{activeTitle}</h2>

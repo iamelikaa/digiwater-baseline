@@ -17,8 +17,9 @@ finishing, per the instruction at the end of each task prompt).
 - Task 05.1 — Report Leak Form (Added `/report-leak` route, built `ReportLeak` component with form state, added `LeakReport` type and `leakReports` array to mock data, updated Sidebar to navigate. Removed max-width constraint from page container.)
 - Task 06.1 — Leak History (Added `/leak-history` route, built `LeakHistory` component with filter bar and paginated data table, implemented client-side sorting and filtering, and seeded mock data array. Fixed table header and badge casing to match design. Reverted generated mock addresses to `"Via ..."` placeholders as shown in design.)
 - Task 07.1 — AI Assistant Chat Panel (Added floating chat button and popup panel to the shared layout in `Overview.tsx`, including basic mock message flow and styling.)
+- Task 08.1 — User Profile / Settings (Added `/settings` route, built Settings component with avatar card and forms, updated Sidebar navigation, and centralized `currentUser` in mock data.)
 ## In progress / current task
-Task 08.1
+None (All recommended tasks completed)
 
 ## Finished tasks (by ID)
 - 01.1
@@ -34,6 +35,7 @@ Task 08.1
 - 05.1
 - 06.1
 - 07.1
+- 08.1
 ## Recommended next task
 01.1 → then 02.1, 02.2, 02.3 → 03.1, 03.2 → 04.1, 04.2, 04.3 → 05.1 → 06.1 → 07.1 → 08.1
 (see `Study-Materials/Tasks/README.md` for why this order)
@@ -41,6 +43,7 @@ Task 08.1
 ## Mock data state
 - `src/data/mockData.ts` — extended with `sensorCount`, `leakageProbability`, and `lastSensorUpdate` in Tasks 03.1 and 03.2 for all districts and childless municipalities.
 - `src/data/mockData.ts` — added `LeakReport` interface and `leakReports` array in Task 05.1, seeded with 12 mock historical records in Task 06.1 to persist submitted leak reports and drive the Leak History table.
+- `src/data/mockData.ts` — added `UserProfile` interface and `currentUser` object in Task 08.1 to share identity data between the Top Bar and Settings page.
 - No new mock data fields or shared data sources were added in Tasks 01.1, 02.1, 02.2, 02.3, 02.4, or 07.1.
 
 ## Branch
