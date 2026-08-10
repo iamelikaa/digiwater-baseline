@@ -1,9 +1,23 @@
 /* Reusable Card Component */
 .card {
   background: var(--color-card-bg, #ffffff);
-  border-radius: var(--radius-lg, 12px);
+  border-radius: var(--radius-lg, 20px);
   box-shadow: var(--shadow-card);
   border: 1px solid rgba(226, 232, 240, 0.6);
+  transition: box-shadow 0.2s var(--ease-out, ease);
+}
+
+/* Consistent keyboard-focus indicator for buttons/links that didn't have
+   one defined before (they were relying on inconsistent browser defaults) */
+.submit-report-btn:focus-visible,
+.settings-save-btn:focus-visible,
+.search-btn:focus-visible,
+.page-btn:focus-visible,
+.view-link-btn:focus-visible,
+.toggle-btn:focus-visible,
+.change-photo-link:focus-visible {
+  outline: 2px solid var(--color-primary-blue);
+  outline-offset: 2px;
 }
 
 /* Login Page Layout */
@@ -49,7 +63,7 @@
   height: 38px;
   background-color: var(--color-primary-blue);
   color: #ffffff;
-  border-radius: 8px;
+  border-radius: 11px;
   font-weight: 700;
   font-size: 16px;
   display: flex;
@@ -166,13 +180,15 @@
   background-color: var(--color-primary-teal);
   color: #ffffff;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: var(--shadow-raised);
   transition:
-    background-color 0.2s ease,
-    transform 0.1s ease;
+    background-color 0.2s var(--ease-out, ease),
+    box-shadow 0.2s var(--ease-out, ease),
+    transform 0.15s var(--ease-out, ease);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -180,10 +196,13 @@
 
 .login-submit-btn:hover {
   background-color: var(--color-primary-teal-hover);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
 }
 
 .login-submit-btn:active {
   transform: translateY(1px);
+  box-shadow: var(--shadow-xs);
 }
 
 .login-submit-btn:focus-visible {
@@ -316,7 +335,7 @@
 }
 
 .nav-item.active {
-  background-color: var(--color-info-bg);
+  background-color: #eff6ff;
   color: var(--color-primary-blue, #1b65b2);
   font-weight: 600;
 }
@@ -553,23 +572,23 @@
 .status-card {
   position: relative;
   background: var(--color-card-bg, #ffffff);
-  border-radius: var(--radius-lg, 12px);
+  border-radius: var(--radius-lg, 20px);
   border: 1px solid var(--color-border, #e2e8f0);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-  padding: 16px 20px 16px 22px;
+  box-shadow: var(--shadow-card);
+  padding: 18px 22px 18px 24px;
   min-height: 108px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   overflow: hidden;
   transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+    transform 0.2s var(--ease-out, ease),
+    box-shadow 0.2s var(--ease-out, ease);
 }
 
 .status-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.03);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .status-card-accent {
@@ -711,7 +730,7 @@
 }
 
 .map-tooltip-status.status-pill-normal {
-  color: var(--color-success-text);
+  color: #059669;
   background: transparent;
   padding: 0;
 }
@@ -742,7 +761,7 @@
 }
 
 .status-text-normal {
-  color: var(--color-success-text);
+  color: #059669;
 }
 
 .status-text-warning {
@@ -850,8 +869,8 @@
 }
 
 .status-pill-normal {
-  background-color: var(--color-success-bg);
-  color: var(--color-success-text);
+  background-color: #d1fae5;
+  color: #059669;
 }
 
 .status-pill-warning {
@@ -904,8 +923,8 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: var(--color-success-bg);
-  color: var(--color-success-text);
+  background-color: #d1fae5;
+  color: #059669;
   font-size: 24px;
   font-weight: 700;
   display: flex;
@@ -1061,9 +1080,9 @@
 }
 
 .toast-success {
-  background-color: var(--color-success-bg);
-  color: var(--color-success-text);
-  border: 1px solid var(--color-success-border);
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
   padding: 12px 16px;
   border-radius: var(--radius-md);
   margin-bottom: 24px;
@@ -1182,7 +1201,7 @@
 .toggle-btn.active {
   border-color: var(--color-primary-teal);
   color: var(--color-primary-teal);
-  background-color: var(--color-success-bg);
+  background-color: #f0fdf4;
 }
 
 .submit-report-btn {
@@ -1191,20 +1210,24 @@
   background-color: var(--color-primary-teal);
   color: #ffffff;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   margin-top: 12px;
-  transition: background-color 0.2s, transform 0.1s;
+  box-shadow: var(--shadow-raised);
+  transition: background-color 0.2s var(--ease-out, ease), box-shadow 0.2s var(--ease-out, ease), transform 0.15s var(--ease-out, ease);
 }
 
 .submit-report-btn:hover {
   background-color: var(--color-primary-teal-hover);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
 }
 
 .submit-report-btn:active {
   transform: translateY(1px);
+  box-shadow: var(--shadow-xs);
 }
 
 /* Leak History Page */
@@ -1322,15 +1345,15 @@
 }
 
 .type-internal {
-  background-color: var(--color-success-bg);
-  color: var(--color-success-text);
-  border: 1px solid var(--color-success-border);
+  background-color: #ecfdf5;
+  color: #059669;
+  border: 1px solid #6ee7b7;
 }
 
 .type-external {
-  background-color: var(--color-info-bg);
-  color: var(--color-primary-blue);
-  border: 1px solid var(--color-info-border);
+  background-color: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
 }
 
 .view-link-btn {
@@ -1495,13 +1518,13 @@
 }
 
 .avatar-badge {
-  background-color: var(--color-success-bg);
-  color: var(--color-success-text);
+  background-color: #d1fae5; /* green-100 */
+  color: #065f46; /* green-800 */
   padding: 4px 12px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid var(--color-success-border);
+  border: 1px solid #a7f3d0;
 }
 
 /* Section Cards */
@@ -1534,22 +1557,26 @@
   background-color: var(--color-primary-teal, #5bb398);
   color: #ffffff;
   border: none;
-  border-radius: var(--radius-md, 8px);
+  border-radius: var(--radius-pill);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: var(--shadow-raised);
+  transition: background-color 0.2s var(--ease-out, ease), box-shadow 0.2s var(--ease-out, ease), transform 0.15s var(--ease-out, ease);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .settings-save-btn:hover {
-  background-color: var(--color-primary-teal-hover, #4ca388);
+  background-color: var(--color-primary-teal-hover, #4a9e86);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
 }
 
 .settings-save-btn:active {
   transform: translateY(1px);
+  box-shadow: var(--shadow-xs);
 }
 
 .settings-footer-caption {
